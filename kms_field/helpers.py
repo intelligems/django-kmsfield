@@ -1,3 +1,4 @@
+import base64
 import boto3
 
 client = boto3.client('kms')
@@ -24,10 +25,12 @@ def encrypt_value(value, cmk, encryption_context=None):
         #     'string',
         # ]
     )
-    return response.get('CiphertextBlob')
+    cipher = response.get('CiphertextBlob')
+    return base64.b64encode(cipher).decode('utf-8')
 
 
-def decrypt_ciphertext_blob(ciphertext_blob, encryption_context=None):
+def decrypt_ciphertext_blob(cipher, encryption_context=None):
+    ciphertext_blob = base64.b64decode(cipher)
     encryption_context = encryption_context or {}
     response = client.decrypt(
         CiphertextBlob=ciphertext_blob,
@@ -36,4 +39,23 @@ def decrypt_ciphertext_blob(ciphertext_blob, encryption_context=None):
         #     'string',
         # ]
     )
-    return response.get('Plaintext')
+    plaintext = response.get('Plaintext')
+    if plaintext is not None:
+        return plaintext.decode('utf-8')
+    return None
+
+
+def decrypt_cipher_client(client, cipher, encryption_context=None):
+    ciphertext_blob = base64.b64decode(cipher)
+    encryption_context = encryption_context or {}
+    response = client.decrypt(
+        CiphertextBlob=ciphertext_blob,
+        EncryptionContext=encryption_context,
+        # GrantTokens=[
+        #     'string',
+        # ]
+    )
+    plaintext = response.get('Plaintext')
+    if plaintext is not None:
+        return plaintext.decode('utf-8')
+    return None
