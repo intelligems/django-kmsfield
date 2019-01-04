@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django_kmsfield',
-    version='0.1.0',
+    version='0.2.0',
     packages=['kms_field'],
     url='',
     license='',
@@ -11,7 +11,8 @@ setup(
     description='Adds KMSEncryptedField to django model fields',
     install_requires=[
         'aws-encryption-sdk',
-        'kms_client'
+        'kms_client',
+        'Django'
     ],
     dependency_links=[
         'http://pypi.intelligems.eu/simple/kms-client/'
