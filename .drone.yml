@@ -1,0 +1,52 @@
+pipeline:
+
+  # test:
+  #   image: python:3.6-slim
+  #   secrets:
+  #     - aws_access_key_id
+  #     - aws_secret_access_key
+  #     - cmk
+  #     - region_name
+  #   commands:
+  #     - pip install -r requirements.txt
+  #     - pytest -v --cov=kms_client tests/
+  #   when:
+  #     branch: master
+  #     event: [ push, pull_request ]
+
+  pypi_publish:
+    secrets:
+      - username
+      - password
+    image: gjtempleton/drone-pypi
+    repository: http://pypi.intelligems.eu/
+    distributions:
+      - sdist
+    setupfile: setup.py
+    when:
+      branch: master
+      event: push
+
+  slack:
+    image: plugins/slack
+    secrets:
+      - slack_webhook
+    webhook: ${SLACK_WEBHOOK}
+    channel: ci-messages
+    username: drone
+    template: >
+      {{#success build.status}}
+        *{{build.status}}* {{repo.name}} <{{build.link}}|{{build.number}}>. Ένα QA μόνος μου είμαι ο πούστης.
+        Author: {{build.author}}
+        Commit: <${DRONE_COMMIT_LINK}|{{repo.owner}}/{{repo.name}}#${DRONE_COMMIT:0:8}> `${DRONE_COMMIT_MESSAGE}`
+        Trigger event: {{build.event}} ({{build.branch}})
+      {{else}}
+        *{{build.status}}* {{repo.name}} <{{build.link}}|{{build.number}}>. Δε φταίει ο κώδικας, τα τεστ φταίνε.
+        Author: {{build.author}}
+        Commit: <${DRONE_COMMIT_LINK}|{{repo.owner}}/{{repo.name}}#${DRONE_COMMIT:0:8}> `${DRONE_COMMIT_MESSAGE}`
+        Trigger event: {{build.event}} ({{build.branch}})
+      {{/success}}
+    when:
+      status: [success, failure]
+
+branches: [master]

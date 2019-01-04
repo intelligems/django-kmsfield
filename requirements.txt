@@ -9,6 +9,7 @@ Django==2.1.4
 docutils==0.14
 idna==2.8
 jmespath==0.9.3
+kms-client==1.0.3
 pycparser==2.19
 python-dateutil==2.7.5
 pytz==2018.7
