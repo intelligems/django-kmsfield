@@ -2,8 +2,8 @@ from distutils.core import setup
 
 setup(
     name='django_kmsfield',
-    version='0.2.3',
-    packages=['kms_field', 'kms_field.management'],
+    version='0.3.0',
+    packages=['kms_field', 'kms_field.management', 'kms_field.management.commands'],
     url='',
     license='',
     author='idritsas',
