@@ -16,4 +16,3 @@ class Command(BaseCommand):
 
         cmk = generate_cmk(description)
         self.stdout.write(msg=cmk)
-
