@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.management.base import BaseCommand
 from kms_field.helpers import generate_cmk
 
@@ -9,7 +11,8 @@ class Command(BaseCommand):
         parser.add_argument('-d', '--description', type=str, help='Define a description for CMK',)
 
     def handle(self, *args, **options):
-        description = options.get('description')
+        now = datetime.datetime.now()
+        description = options.get('description') or f'KMSField CMK {now.strftime("%d.%m.%y_%H:%M")}'
 
         cmk = generate_cmk(description)
         self.stdout.write(msg=cmk)
