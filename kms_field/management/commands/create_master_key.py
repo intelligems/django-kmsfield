@@ -15,4 +15,5 @@ class Command(BaseCommand):
         description = options.get('description') or f'KMSField CMK {now.strftime("%d-%m-%y %H:%M")}'
 
         cmk = generate_cmk(description)
-        self.stdout.write(cmk)
+        message = cmk if cmk else 'CMK was not created'
+        self.stdout.write(msg=message)
