@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         now = datetime.datetime.now()
-        description = options.get('description') or f'KMSField CMK {now.strftime("%d.%m.%y_%H:%M")}'
+        description = options.get('description') or f'KMSField CMK {now.strftime("%d-%m-%y %H:%M")}'
 
         cmk = generate_cmk(description)
-        self.stdout.write(msg=cmk)
+        self.stdout.write(cmk)
