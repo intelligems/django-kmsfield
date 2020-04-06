@@ -1,5 +1,8 @@
 # Django KMS Encrypted Fields
 
+# Repository unmaintained
+As Intelligems has stopped operations since Aug19, this repository remains unmaintained. Whoever may be interested to keep it up-to-date or extend it, DM [koslib](twitter.com/koslib) to arrange project transfer.
+
 ## Installation
 
 - Connected to OpenVPN server
